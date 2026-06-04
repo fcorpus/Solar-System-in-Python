@@ -2,7 +2,7 @@
 
 this project uses the pygame libray, the link is <a href="https://www.pygame.org/news">this</a>
 
-to run this project you must instal the library first:
+to run this project you must instal the pygame library first here is how, open a terminal and paste this:
 ```python
 pip install pygame
 ```
