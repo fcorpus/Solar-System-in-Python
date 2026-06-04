@@ -1,4 +1,4 @@
-#A Solar System in Python :DDD#
+# A Solar System in Python :DDD
 
 this project uses the pygame libray, the link is <a href="https://www.pygame.org/news">this</a>
 
