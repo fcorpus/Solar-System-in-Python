@@ -19,6 +19,8 @@ font = pygame.font.SysFont(None, 24)
 
 clock = pygame.time.Clock()
 
+simulation_speed = 1.0
+
 class Planet:
     def __init__(self, name, orbit_radius, size, color, speed, info):
         self.name = name
@@ -32,8 +34,8 @@ class Planet:
         self.x = 0
         self.y = 0
 
-    def update(self):
-        self.angle += self.speed
+    def update(self, speed_multiplier):
+        self.angle += self.speed * speed_multiplier
         self.x = CENTER_X + math.cos(self.angle) * self.orbit_radius
         self.y = CENTER_Y + math.sin(self.angle) * self.orbit_radius 
 
@@ -88,7 +90,7 @@ planets = [
            "Venus\nDistance: 108M km"),
 
     Planet("Earth", 130, 9, (50, 100, 255), 0.025,
-           "Earth\nDistance: 150M km"),
+           """Earth\nDiameter: 12,742 km\nMoons: 1\nOrbit: 365 days\nAverage Temp: 15°C"""),
 
     Planet("Mars", 170, 7, (255, 80, 50), 0.02,
            "Mars\nDistance: 228M km"),
@@ -145,6 +147,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            #increase speed
+            if event.key == pygame.K_UP:
+                simulation_speed += 1.25
+            #decrease speed
+            elif event.key == pygame.K_DOWN:
+                simulation_speed /= 1.25
+            elif event.key == pygame.K_r:
+                simulation_speed = 1.0
     
     screen.fill(BLACK)
 
@@ -162,11 +173,19 @@ while running:
     hovered_planet = None
     
     for planet in planets:
-        planet.update()
+        planet.update(simulation_speed)
         planet.draw(screen)
 
         if planet.is_hovered(pygame.mouse.get_pos()):
             hovered_planet= planet
+
+    speed_text = font.render(
+        f"Simulation Speed: {simulation_speed:.2f}x   Arrow up to speed up   Arrow down to speed down  R to reset",
+        True,
+        WHITE
+    )
+
+    screen.blit(speed_text, (20, 20))
 
     if hovered_planet:
         mx, my = pygame.mouse.get_pos()
