@@ -84,28 +84,28 @@ class Planet:
 
 planets = [
     Planet("Mercury", 60, 5, (170, 170, 170), 0.04,
-           "Mercury\nDistance: 58M km"),
+           "Mercury\nDiameter: 4,879 km\nMoons: 0\nOrbit: 88 days\nAverage Temp: -173°C and 427°C"),
 
     Planet("Venus", 90, 8, (255, 180, 50), 0.03,
-           "Venus\nDistance: 108M km"),
+           "Venus\nDiameter: 12,104 km\nMoons: 0\nOrbit: 225 days\nAverage Temp: 462°C"),
 
     Planet("Earth", 130, 9, (50, 100, 255), 0.025,
            """Earth\nDiameter: 12,742 km\nMoons: 1\nOrbit: 365 days\nAverage Temp: 15°C"""),
 
     Planet("Mars", 170, 7, (255, 80, 50), 0.02,
-           "Mars\nDistance: 228M km"),
+           "Mars\nDiameter: 6,792 km\nMoons: 2\nOrbit: 687 days\nAverage Temp: -65°C"),
 
     Planet("Jupiter", 230, 18, (210, 170, 120), 0.01,
-           "Jupiter\nLargest Planet"),
+           "Jupiter\nDiameter: 142,984 km\nMoons: 95\nOrbit: 4,333 days\nAverage Temp: -108°C"),
 
     Planet("Saturn", 300, 16, (220, 200, 140), 0.008,
-           "Saturn\nHas Rings"),
+           "Saturn\nDiameter: 120,536 km\nMoons: 146\nOrbit: 10,756 days\nAverage Temp: 15°C"),
 
     Planet("Uranus", 370, 13, (150, 220, 255), 0.006,
-           "Uranus\nIce Giant"),
+           "Uranus\nDiameter: 51,118 km\nMoons: 28\nOrbit: 30,687 days\nAverage Temp: -224°C"),
 
     Planet("Neptune", 430, 13, (70, 120, 255), 0.005,
-           "Neptune\nFarthest Planet")
+           "Neptune\nDiameter: 49,528 km\nMoons: 14\nOrbit: 60,190 days\nAverage Temp: -215°C")
 ]
 
 stars = [
