@@ -22,11 +22,18 @@ clock = pygame.time.Clock()
 simulation_speed = 1.0
 
 class Planet:
-    def __init__(self, name, orbit_radius, size, color, speed, info):
+    def __init__(self, name, orbit_radius, size, image_path, speed, info):
         self.name = name
         self.orbit_radius = orbit_radius
         self.size = size
-        self.color = color
+        
+        self.texture = pygame.image.load(image_path).convert_alpha()
+
+        self.texture = pygame.transform.smoothscale(
+            self.texture, 
+            (size * 2, size * 2)
+        )
+
         self.speed = speed
         self.angle = 0
         self.info = info
@@ -50,24 +57,13 @@ class Planet:
         )
 
         #planet
-        pygame.draw.circle(
-            screen,
-            self.color,
-            (int(self.x), int(self.y)),
-            self.size
-        )
-        if self.name == "Saturn":
-            pygame.draw.ellipse(
-                screen,
-                (200, 200, 180),
-                (
-                    self.x - 25,
-                    self.y - 10,
-                    50,
-                    20
-                ),
-                2
+        screen.blit(
+            self.texture,
+            (
+                self.x - self.size,
+                self.y - self.size
             )
+        )
 
         label = font.render(self.name, True, WHITE)
         screen.blit(label, (self.x + 10, self.y))
@@ -83,28 +79,28 @@ class Planet:
         return distance <= self.size
 
 planets = [
-    Planet("Mercury", 60, 5, (170, 170, 170), 0.04,
+    Planet("Mercury", 60, 5, "textures/mercury.png", 0.04,
            "Mercury\nDiameter: 4,879 km\nMoons: 0\nOrbit: 88 days\nAverage Temp: -173°C and 427°C"),
 
-    Planet("Venus", 90, 8, (255, 180, 50), 0.03,
+    Planet("Venus", 90, 8, "textures/Venus.png", 0.03,
            "Venus\nDiameter: 12,104 km\nMoons: 0\nOrbit: 225 days\nAverage Temp: 462°C"),
 
-    Planet("Earth", 130, 9, (50, 100, 255), 0.025,
+    Planet("Earth", 130, 9, "textures/earth.png", 0.025,
            """Earth\nDiameter: 12,742 km\nMoons: 1\nOrbit: 365 days\nAverage Temp: 15°C"""),
 
-    Planet("Mars", 170, 7, (255, 80, 50), 0.02,
+    Planet("Mars", 170, 7, "textures/mars.png", 0.02,
            "Mars\nDiameter: 6,792 km\nMoons: 2\nOrbit: 687 days\nAverage Temp: -65°C"),
 
-    Planet("Jupiter", 230, 18, (210, 170, 120), 0.01,
+    Planet("Jupiter", 230, 18, "textures/jupiter.png", 0.01,
            "Jupiter\nDiameter: 142,984 km\nMoons: 95\nOrbit: 4,333 days\nAverage Temp: -108°C"),
 
-    Planet("Saturn", 300, 16, (220, 200, 140), 0.008,
+    Planet("Saturn", 300, 16, "textures/saturn.png", 0.008,
            "Saturn\nDiameter: 120,536 km\nMoons: 146\nOrbit: 10,756 days\nAverage Temp: 15°C"),
 
-    Planet("Uranus", 370, 13, (150, 220, 255), 0.006,
+    Planet("Uranus", 370, 13, "textures/uranus.png", 0.006,
            "Uranus\nDiameter: 51,118 km\nMoons: 28\nOrbit: 30,687 days\nAverage Temp: -224°C"),
 
-    Planet("Neptune", 430, 13, (70, 120, 255), 0.005,
+    Planet("Neptune", 430, 13, "textures/neptune.png", 0.005,
            "Neptune\nDiameter: 49,528 km\nMoons: 14\nOrbit: 60,190 days\nAverage Temp: -215°C")
 ]
 
