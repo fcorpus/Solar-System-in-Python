@@ -77,6 +77,47 @@ class Planet:
         )
 
         return distance <= self.size
+    
+
+class Asteroid:
+    def __init__(self):
+        self.orbit_radius = random.gauss(202, 8)
+        self.size = random.randint(1,3)
+        self.angle = random.uniform(0, math.pi * 2)
+        self.speed = 0.01 + random.uniform(-0.003, 0.003)
+
+        self.color = (
+            random.randint(100,180),
+            random.randint(100,180),
+            random.randint(100,180)
+        )
+
+        self.x = 0
+        self.y = 0
+
+    def update(self, speed_multiplier):
+        self.angle += self.speed * speed_multiplier
+        self.x = CENTER_X + math.cos(self.angle) * self.orbit_radius
+        self.y = CENTER_Y + math.sin(self.angle) * self.orbit_radius
+
+    def draw(self, screen):
+        pygame.draw.ellipse(
+            screen,
+            self.color,
+            (
+                self.x,
+                self.y,
+                self.size * 2,
+                self.size
+            )
+        )
+    
+    def is_hovered(self, mouse_pos):
+        mx, my = mouse_pos
+
+        return math.sqrt(
+            (mx - self.x) ** 2 + (my - self.y) ** 2
+        ) < 5
 
 planets = [
     Planet("Mercury", 60, 5, "textures/mercury.png", 0.04,
@@ -103,6 +144,10 @@ planets = [
     Planet("Neptune", 430, 13, "textures/neptune.png", 0.005,
            "Neptune\nDiameter: 49,528 km\nMoons: 14\nOrbit: 60,190 days\nAverage Temp: -215°C")
 ]
+
+asteroids = []
+for _ in range(400):
+    asteroids.append(Asteroid())
 
 stars = [
     (
@@ -139,6 +184,7 @@ running = True
 
 while running:
     clock.tick(60)
+    paused = False
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -150,8 +196,11 @@ while running:
             #decrease speed
             elif event.key == pygame.K_DOWN:
                 simulation_speed /= 1.25
+            #reset speed
             elif event.key == pygame.K_r:
                 simulation_speed = 1.0
+            elif event.key == pygame.K_SPACE:
+                paused = not paused
     
     screen.fill(BLACK)
 
@@ -166,10 +215,25 @@ while running:
     for x, y in stars:
         pygame.draw.circle(screen, WHITE, (x, y), 1)
 
+    for asteroid in asteroids:
+        if not paused:
+            asteroid.update(simulation_speed)
+        asteroid.draw(screen)
+
+        if asteroid.is_hovered(pygame.mouse.get_pos()):
+            mx , my = pygame.mouse.get_pos()
+            draw_tooltip(
+                "Asteroid\nMain Belt",
+                mx + 15,
+                my + 15
+            )
+
     hovered_planet = None
     
     for planet in planets:
-        planet.update(simulation_speed)
+        if not paused:
+            planet.update(simulation_speed)
+        
         planet.draw(screen)
 
         if planet.is_hovered(pygame.mouse.get_pos()):
@@ -182,6 +246,16 @@ while running:
     )
 
     screen.blit(speed_text, (20, 20))
+
+    status = "PAUSED" if paused else "RUNNING"
+
+    status_text = font.render(
+        status,
+        True,
+        WHITE
+    )
+
+    screen.blit(status_text, (20, 50))
 
     if hovered_planet:
         mx, my = pygame.mouse.get_pos()
